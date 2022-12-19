@@ -1,6 +1,6 @@
-#include "Inferdum/window.h"
+#include "Kat/window.h"
 
-namespace inferdum {
+namespace kat {
 
     Window& Window::create(sf::WindowHandle handle, const sf::ContextSettings& settings)
     {

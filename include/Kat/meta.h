@@ -3,45 +3,45 @@
 #include <cstddef>
 #include <cstdint>
 
-#define INFERDUM_DEFAULT_CONSTRUCTIBLE(type)                                   \
+#define KAT_DEFAULT_CONSTRUCTIBLE(type)                                   \
     type()  = default;                                                         \
     ~type() = default
 
-#define INFERDUM_CANONICAL_FORM(type)                                          \
+#define KAT_CANONICAL_FORM(type)                                          \
     type(const type&) = default;                                               \
     type& operator=(const type&) = default;                                    \
     type(type&&)                 = default;                                    \
     type& operator=(type&&) = default
 
-#define INFERDUM_CANONICAL_FORM_TEMPLATE(type, ...)                            \
+#define KAT_CANONICAL_FORM_TEMPLATE(type, ...)                            \
     type(const type<__VA_ARGS__>&) = default;                                  \
     type& operator=(const type<__VA_ARGS__>&) = default;                       \
     type(type<__VA_ARGS__>&&)                 = default;                       \
     type& operator=(type<__VA_ARGS__>&&) = default
 
-#define INFERDUM_FULLY_DEFAULT_CANNONICAL(type)                                \
-    INFERDUM_DEFAULT_CONSTRUCTIBLE(type);                                      \
-    INFERDUM_CANONICAL_FORM(type)
+#define KAT_FULLY_DEFAULT_CANNONICAL(type)                                \
+    KAT_DEFAULT_CONSTRUCTIBLE(type);                                      \
+    KAT_CANONICAL_FORM(type)
 
-#define INFERDUM_FULLY_DEFAULT_CANNONICAL_TEMPLATE(type, ...)                  \
-    INFERDUM_DEFAULT_CONSTRUCTIBLE(type);                                      \
-    INFERDUM_CANONICAL_FORM_TEMPLATE(type, __VA_ARGS__)
+#define KAT_FULLY_DEFAULT_CANNONICAL_TEMPLATE(type, ...)                  \
+    KAT_DEFAULT_CONSTRUCTIBLE(type);                                      \
+    KAT_CANONICAL_FORM_TEMPLATE(type, __VA_ARGS__)
 
-#define INFERDUM_ASSERT_GOTO(assertion, label)                                 \
+#define KAT_ASSERT_GOTO(assertion, label)                                 \
     {                                                                          \
         if ((assertion) == false) {                                            \
             goto label;                                                        \
         }                                                                      \
     }
 
-#define INFERDUM_MEMBER_FUNC_BUILDER(class_type, value_type, s, name) \
+#define KAT_MEMBER_FUNC_BUILDER(class_type, value_type, s, name) \
     class_type& name(const value_type& name) \
     { \
         s.name = name; \
         return *this; \
     }
 
-namespace inferdum {
+namespace kat {
     using i8    = std::int8_t;
     using i16   = std::int16_t;
     using i32   = std::int32_t;
@@ -56,4 +56,6 @@ namespace inferdum {
     using usize = std::size_t;
     using isize = std::ptrdiff_t;
     using byte  = std::uint8_t;
-} // namespace inferdum
+    using Memory = void*;
+    using Pixels = u8 *;
+} // namespace kat

@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace inferdum {
+namespace kat {
     namespace math {
 
         static inline constexpr double PI = 3.14159265358979323846;
@@ -20,8 +20,7 @@ namespace inferdum {
         static inline constexpr double CUBE_ROOT_3    = 1.44224957030740838232;
         static inline constexpr double TWELFTH_ROOT_2 = 1.05946309435929526456;
 
-        static inline constexpr double SUPER_GOLDEN_RATIO
-            = 1.46557123187676802665;
+        static inline constexpr double SUPER_GOLDEN_RATIO = 1.46557123187676802665;
 
         static inline constexpr double RADIAN = 0.0174532925199432957692;
         static inline constexpr double DEGREE = 57.2957795130823208768;
@@ -49,35 +48,29 @@ namespace inferdum {
         static inline constexpr double GRAVITY_ACCELERATION_ON_MOON  = 1.622;
         static inline constexpr double GRAVITY_ACCELERATION_ON_MARS  = 3.711;
 
-        static inline constexpr double AVERAGE_HUMAN_ACCELERATION_ON_EARTH
-            = 1.5;
+        static inline constexpr double AVERAGE_HUMAN_ACCELERATION_ON_EARTH = 1.5;
         static inline constexpr double AVERAGE_HUMAN_ACCELERATION_ON_MOON = 0.3;
         static inline constexpr double AVERAGE_HUMAN_ACCELERATION_ON_MARS = 0.5;
 
         static inline constexpr double LIGHT_SPEED = 299792458.0;
 
         static inline constexpr double PLANCK_CONSTANT = 6.62607015e-34;
-        static inline constexpr double PLANCK_CONSTANT_REDUCED
-            = PLANCK_CONSTANT / (2 * PI);
+        static inline constexpr double PLANCK_CONSTANT_REDUCED = PLANCK_CONSTANT / (2 * PI);
 
         static inline constexpr double ELECTRON_VOLT = 1.602176634e-19;
         static inline constexpr double ELECTRON_MASS = 9.1093837015e-31;
 
         static inline constexpr double BOLTZMANN_CONSTANT = 1.380649e-23;
         static inline constexpr double AVOGADRO_CONSTANT  = 6.02214076e23;
-        static inline constexpr double GAS_CONSTANT
-            = BOLTZMANN_CONSTANT * AVOGADRO_CONSTANT;
-        static inline constexpr double FARADAY_CONSTANT
-            = AVOGADRO_CONSTANT * ELECTRON_VOLT;
+        static inline constexpr double GAS_CONSTANT = BOLTZMANN_CONSTANT * AVOGADRO_CONSTANT;
+        static inline constexpr double FARADAY_CONSTANT = AVOGADRO_CONSTANT * ELECTRON_VOLT;
 
-        static inline constexpr double UNIVERSAL_GRAVITATIONAL_CONSTANT
-            = 6.67430e-11;
+        static inline constexpr double UNIVERSAL_GRAVITATIONAL_CONSTANT = 6.67430e-11;
 
         static inline constexpr double ELECTRON_CHARGE = -1.602176634e-19;
         static inline constexpr double ELECTRON_MAGNETIC_MOMENT = -9.284764e-24;
         static inline constexpr double ELECTRON_G_FACTOR = -2.00231930436182;
-        static inline constexpr double ELECTRON_GYROMAGNETIC_RATIO
-            = 1.760859644e11;
+        static inline constexpr double ELECTRON_GYROMAGNETIC_RATIO = 1.760859644e11;
 
         constexpr static inline double asRadians(const double& degrees)
         {
@@ -216,15 +209,17 @@ namespace inferdum {
             return clamp(v, 0.0, 1.0);
         }
 
-        constexpr static inline double
-        smoothstep(const double& a, const double& b, const double& t)
+        constexpr static inline double smoothstep(const double& a,
+                                                  const double& b,
+                                                  const double& t)
         {
             double x = clamp((t - a) / (b - a), 0.0, 1.0);
             return x * x * (3.0 - 2.0 * x);
         }
 
-        constexpr static inline double
-        smootherstep(const double& a, const double& b, const double& t)
+        constexpr static inline double smootherstep(const double& a,
+                                                    const double& b,
+                                                    const double& t)
         {
             double x = clamp((t - a) / (b - a), 0.0, 1.0);
             return x * x * x * (x * (x * 6.0 - 15.0) + 10.0);

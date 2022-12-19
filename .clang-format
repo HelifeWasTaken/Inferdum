@@ -5,12 +5,11 @@ AlignConsecutiveMacros: 'true'
 AlignConsecutiveAssignments: 'true'
 AlignConsecutiveDeclarations: 'true'
 AlignTrailingComments: 'true'
-ColumnLimit: '80'
+ColumnLimit: '100'
 CompactNamespaces: 'false'
 ConstructorInitializerAllOnOneLineOrOnePerLine: 'false'
 NamespaceIndentation: All
 Standard: Cpp11
 TabWidth: '4'
 UseTab: Never
-
 ...

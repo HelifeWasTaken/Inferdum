@@ -2,16 +2,49 @@
 
 #include "../meta.h"
 #include "../window.h"
-#include "./vector.h"
 
 #include <SFML/Graphics/Texture.hpp>
 
 #include <memory>
 #include <string>
 
-namespace inferdum {
+namespace kat {
 
+    /**
+     * @brief A shared pointer to a texture.
+     */
     using shared_texture_t = std::shared_ptr<sf::Texture>;
+
+    /**
+     * @brief A single frame of an animation.
+     */
+    using Frame = sf::IntRect;
+
+    /**
+     * @brief A texture coordinate.
+     */
+    using TextureCoordinate = u32;
+
+    /**
+     * @brief A frame size.
+     */
+    using FrameSize = sf::Vector2<TextureCoordinate>;
+
+    /**
+     * @brief A texture size.
+     */
+    using TextureSize = sf::Vector2<TextureCoordinate>;
+
+    /**
+     * @brief A coordinate.
+     */
+    using Coordinate = float;
+
+    /**
+     * @brief A position.
+     */
+    using Position = sf::Vector2<Coordinate>;
+
 
     class Texture {
     public:
@@ -36,7 +69,7 @@ namespace inferdum {
          * @return Texture& Reference to self.
          */
         Texture& load(const std::string& filename,
-                      const sf::IntRect& area = sf::IntRect());
+                      const Frame& area = Frame());
 
         /**
          * @brief Loads a texture from memory.
@@ -46,24 +79,23 @@ namespace inferdum {
          * @param area The area of the texture.
          * @return Texture& Reference to self.
          */
-        Texture& load(const void* data, std::size_t size,
-                      const sf::IntRect& area = sf::IntRect());
+        Texture& load(const Memory data, std::size_t size,
+                      const Frame& area = Frame());
 
         /**
          * @brief Loads a texture from a file.
          * 
-         * @param width The width of the texture.
-         * @param height The height of the texture.
+         * @param size The size of the texture.
          * @return Texture& Reference to self.
          */
-        Texture& create(u32 width, u32 height);
+        Texture& create(const TextureSize& size);
 
         /**
          * @brief Gets the size of the texture.
          * 
-         * @return Vector2u The size of the texture.
+         * @return TextureSize The size of the texture.
          */
-        Vector2u size() const;
+        TextureSize size() const;
 
         /**
          * @brief Updates the texture.
@@ -71,19 +103,16 @@ namespace inferdum {
          * @param pixels The pixels of the texture.
          * @return Texture& Reference to self.
          */
-        Texture& update(const u8* pixels);
+        Texture& update(const Pixels pixels);
 
         /**
          * @brief Updates the texture.
          * 
          * @param pixels The pixels of the texture.
-         * @param width The width of the texture.
-         * @param height The height of the texture.
-         * @param x The x position of the texture.
-         * @param y The y position of the texture.
+         * @param frame The frame of the texture.
          * @return Texture& Reference to self.
          */
-        Texture& update(const u8* pixels, u32 width, u32 height, u32 x, u32 y);
+        Texture& update(const Pixels pixels, const Frame& frame);
 
         /**
          * @brief Updates the texture from a sfml raw texture pointer.
@@ -101,7 +130,8 @@ namespace inferdum {
          * @param y The y position of the texture.
          * @return Texture& Reference to self.
          */
-        Texture& update(const sf::Texture *sfml_texture, u32 x, u32 y);
+        Texture& update(const sf::Texture *sfml_texture,
+            const TextureCoordinate& x, const TextureCoordinate& y);
 
         /**
          * @brief Updates the texture from another texture.
@@ -119,7 +149,8 @@ namespace inferdum {
          * @param y The y position of the texture.
          * @return Texture& Reference to self.
          */
-        Texture& update(const Texture& texture, u32 x, u32 y);
+        Texture& update(const Texture& texture, const TextureCoordinate& x,
+                        const TextureCoordinate& y);
 
         /**
          * @brief Updates the texture from a window.
@@ -137,7 +168,8 @@ namespace inferdum {
          * @param y The y position of the texture.
          * @return Texture& Reference to self.
          */
-        Texture& update(const sf::Window& sfml_window, u32 x, u32 y);
+        Texture& update(const sf::Window& sfml_window, const TextureCoordinate& x,
+                        const TextureCoordinate& y);
 
         /**
          * @brief Updates the texture from a window.
@@ -155,7 +187,8 @@ namespace inferdum {
          * @param y The y position of the texture.
          * @return Texture& Reference to self.
          */
-        Texture& update(const Window& window, u32 x, u32 y);
+        Texture& update(const Window& window, const TextureCoordinate& x,
+                        const TextureCoordinate& y);
 
         /**
          * @brief Set the Smooth object

@@ -6,7 +6,17 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-namespace inferdum {
+namespace kat {
+
+    template<typename DrawableObject, typename _Window>
+    concept SfmlDrawable = requires(const DrawableObject& drawable, _Window& window) {
+        window.draw(drawable);
+    };
+
+    template<typename DrawableObject, typename _Window>
+    concept KatDrawable = requires(const DrawableObject& drawable, _Window& window) {
+        drawable.draw(window);
+    };
 
     class Window {
     public:
@@ -28,7 +38,7 @@ namespace inferdum {
          * @param settings The settings of the window.
          * @return Window& Reference to self.
          */
-        Window& create(sf::VideoMode mode, const std::string& title = "Inferdum", sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
+        Window& create(sf::VideoMode mode, const std::string& title = "Kat", sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
 
         /**
          * @brief Creates a window from a video mode.
@@ -38,7 +48,7 @@ namespace inferdum {
          * @param style The style of the window.
          * @param settings The settings of the window.
          */
-        Window(sf::VideoMode mode, const std::string& title = "Inferdum", sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
+        Window(sf::VideoMode mode, const std::string& title = "Kat", sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
 
         /**
          * @brief Creates a window from a handle.
@@ -101,6 +111,30 @@ namespace inferdum {
          * @return sf::RenderWindow& The handle of the window.
          */
         const sf::RenderWindow& getHandle() const;
+
+        /**
+         * @brief Draws a drawable to the window.
+         * @param drawable The drawable to draw.
+         * @return Window& Reference to self.
+         */
+        template<typename Drawable>
+        requires KatDrawable<Drawable, Window>
+        Window& draw(const Drawable& drawable) {
+            drawable.draw(*this);
+            return *this;
+        }
+
+        /**
+         * @brief Draws a drawable to the window.
+         * @param drawable The drawable to draw.
+         * @return Window& Reference to self.
+         */
+        template<typename Drawable>
+        requires SfmlDrawable<Drawable, sf::RenderWindow>
+        Window& draw(const Drawable& drawable) {
+            m_window.draw(drawable);
+            return *this;
+        }
 
     private:
         sf::RenderWindow m_window;

@@ -1,6 +1,6 @@
-#include "Inferdum/components/texture.h"
+#include "Kat/components/texture.h"
 
-namespace inferdum {
+namespace kat {
 
     Texture& Texture::load(sf::Texture* texture)
     {
@@ -14,7 +14,7 @@ namespace inferdum {
         return *this;
     }
 
-    Texture& Texture::load(const std::string& filename, const sf::IntRect& area)
+    Texture& Texture::load(const std::string& filename, const Frame& area)
     {
         m_texture = std::make_shared<sf::Texture>();
         if (m_texture->loadFromFile(filename, area) == false) {
@@ -23,7 +23,7 @@ namespace inferdum {
         return *this;
     }
 
-    Texture& Texture::load(const void* data, std::size_t size, const sf::IntRect& area)
+    Texture& Texture::load(const Memory data, std::size_t size, const Frame& area)
     {
         m_texture = std::make_shared<sf::Texture>();
         if (m_texture->loadFromMemory(data, size, area) == false) {
@@ -32,29 +32,29 @@ namespace inferdum {
         return *this;
     }
 
-    Texture& Texture::create(u32 width, u32 height)
+    Texture& Texture::create(const TextureSize& size)
     {
         m_texture = std::make_shared<sf::Texture>();
-        if (m_texture->create(width, height) == false) {
+        if (m_texture->create(size.x, size.y) == false) {
             m_texture = nullptr;
         }
         return *this;
     }
 
-    Vector2u Texture::size() const
+    TextureSize Texture::size() const
     {
-        return Vector2u(m_texture->getSize().x, m_texture->getSize().y);
+        return m_texture->getSize();
     }
 
-    Texture& Texture::update(const u8* pixels)
+    Texture& Texture::update(const Pixels pixels)
     {
         m_texture->update(pixels);
         return *this;
     }
 
-    Texture& Texture::update(const u8* pixels, u32 width, u32 height, u32 x, u32 y)
+    Texture& Texture::update(const Pixels pixels, const Frame& frame)
     {
-        m_texture->update(pixels, width, height, x, y);
+        m_texture->update(pixels, frame.width, frame.height, frame.left, frame.top);
         return *this;
     }
 
@@ -64,7 +64,7 @@ namespace inferdum {
         return *this;
     }
 
-    Texture& Texture::update(const sf::Texture *sfml_texture, u32 x, u32 y)
+    Texture& Texture::update(const sf::Texture *sfml_texture, const TextureCoordinate& x, const TextureCoordinate& y)
     {
         m_texture->update(*sfml_texture, x, y);
         return *this;
@@ -76,7 +76,7 @@ namespace inferdum {
         return *this;
     }
 
-    Texture& Texture::update(const Texture& texture, u32 x, u32 y)
+    Texture& Texture::update(const Texture& texture, const TextureCoordinate& x, const TextureCoordinate& y)
     {
         m_texture->update(*texture.m_texture, x, y);
         return *this;
@@ -88,7 +88,7 @@ namespace inferdum {
         return *this;
     }
 
-    Texture& Texture::update(const sf::Window& sfml_window, u32 x, u32 y)
+    Texture& Texture::update(const sf::Window& sfml_window, const TextureCoordinate& x, const TextureCoordinate& y)
     {
         m_texture->update(sfml_window, x, y);
         return *this;
@@ -99,7 +99,7 @@ namespace inferdum {
         return update(window.getHandle());
     }
 
-    Texture& Texture::update(const Window& window, u32 x, u32 y)
+    Texture& Texture::update(const Window& window, const TextureCoordinate& x, const TextureCoordinate& y)
     {
         return update(window.getHandle(), x, y);
     }
