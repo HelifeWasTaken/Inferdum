@@ -10,8 +10,8 @@ namespace kat {
         frames.insert(frames.end(), pframes.begin(), pframes.end());
     }
 
-    void Animation::setFrameTime(const FrameTime& pframe_time) {
-        frame_time = pframe_time;
+    void Animation::setSpeed(const FrameTime& pframe_time) {
+        speed = pframe_time;
     }
 
     void Animation::setLoop(const bool& ploop) {
@@ -24,7 +24,7 @@ namespace kat {
 
         anim.addFrame(Frame(0, 0, tx_size.x, tx_size.y));
         anim.setLoop(false);
-        anim.setFrameTime(0.0f);
+        anim.setSpeed(0.0f);
         m_animations["default"] = std::move(anim);
         m_current_animation = &m_animations["default"];
     }
@@ -77,8 +77,8 @@ namespace kat {
             return *this;
         }
         m_frame_time += dt;
-        if (m_frame_time >= m_current_animation->frame_time) {
-            m_frame_time -= m_current_animation->frame_time;
+        if (m_frame_time >= m_current_animation->speed) {
+            m_frame_time -= m_current_animation->speed;
             if (m_loop == false) {
                 if (m_frame_index == m_current_animation->frames.size() - 1) {
                     m_playing = AnimationState::Stopped;
@@ -118,7 +118,7 @@ namespace kat {
         }
 
         auto anim = Animation();
-        anim.setFrameTime(frame_time);
+        anim.setSpeed(frame_time);
         anim.setLoop(loop);
 
         for (const auto& frame : frames) {

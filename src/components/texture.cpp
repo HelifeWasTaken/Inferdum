@@ -14,6 +14,12 @@ namespace kat {
         return *this;
     }
 
+    Texture& Texture::load(const Texture& texture)
+    {
+        m_texture = texture.m_texture;
+        return *this;
+    }
+
     Texture& Texture::load(const std::string& filename, const Frame& area)
     {
         m_texture = std::make_shared<sf::Texture>();
@@ -96,12 +102,12 @@ namespace kat {
 
     Texture& Texture::update(const Window& window)
     {
-        return update(window.getHandle());
+        return update(window.get_handle());
     }
 
     Texture& Texture::update(const Window& window, const TextureCoordinate& x, const TextureCoordinate& y)
     {
-        return update(window.getHandle(), x, y);
+        return update(window.get_handle(), x, y);
     }
 
     Texture& Texture::setSmooth(bool smooth)

@@ -1,7 +1,8 @@
 #pragma once
 
 #include <SFML/Window/Event.hpp>
-#include "window.h"
+
+#include "./window.h"
 
 namespace kat {
 
@@ -90,8 +91,7 @@ private:
      */
     void _nextFrame();
 
-    public:
-
+public:
     /**
      * @brief Returns a reference to the singleton instance of the InputManager.
      * @return Reference to the InputManager instance.

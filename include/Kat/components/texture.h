@@ -64,6 +64,19 @@ namespace kat {
 
         /**
          * @brief Loads a texture from a file.
+         *        Makes a copy of the texture.
+         *        If you want to use a reference (references are hidden)
+         *        just copy the class.
+         *
+         *        Texture texture = Texture().load("texture.png"); // Load
+         *        Texture copy = Texture().load(texture); // Copy
+         *        Texture texture2 = Texture(copy); // Reference to the copy
+         * @param texture Another kat texture.
+         */
+        Texture& load(const Texture& texture);
+
+        /**
+         * @brief Loads a texture from a file.
          * @param filename The filename of the texture.
          * @param area The area of the texture.
          * @return Texture& Reference to self.

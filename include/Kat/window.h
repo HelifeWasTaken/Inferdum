@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "meta.h"
-
 #include <SFML/Graphics/RenderWindow.hpp>
+
+#include "./meta.h"
 
 namespace kat {
 
@@ -18,6 +18,48 @@ namespace kat {
         drawable.draw(window);
     };
 
+    /**
+     * @brief A window handle.
+     */
+    using WindowHandle = sf::WindowHandle;
+
+    /**
+     * @brief Context settings.
+     */
+    using ContextSettings = sf::ContextSettings;
+
+    /**
+     * @brief ContextSettings attributes.
+     */
+    using ContextAttribute = sf::ContextSettings::Attribute;
+
+    /**
+     * @brief A video mode.
+     */
+    using VideoMode = sf::VideoMode;
+
+    /**
+     * @brief Window style.
+     */
+    enum class WindowStyle : sf::Uint32 {
+        None = sf::Style::None,
+        Titlebar = sf::Style::Titlebar,
+        Resize = sf::Style::Resize,
+        Close = sf::Style::Close,
+        Fullscreen = sf::Style::Fullscreen,
+        Default = sf::Style::Default
+    };
+
+    /**
+     * @brief Fps limit.
+     */
+    using FpsLimit = u32;
+
+    /**
+     * @brief A window size.
+     */
+    using WindowSize = sf::Vector2u;
+
     class Window {
     public:
         /**
@@ -27,7 +69,7 @@ namespace kat {
          * @param settings The settings of the window.
          * @return Window& Reference to self.
          */
-        Window& create(sf::WindowHandle handle, const sf::ContextSettings& settings = sf::ContextSettings());
+        Window& create(WindowHandle handle, const ContextSettings& settings = ContextSettings());
 
         /**
          * @brief Creates a window from a video mode.
@@ -38,7 +80,7 @@ namespace kat {
          * @param settings The settings of the window.
          * @return Window& Reference to self.
          */
-        Window& create(sf::VideoMode mode, const std::string& title = "Kat", sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
+        Window& create(VideoMode mode, const std::string& title = "Kat", WindowStyle style = WindowStyle::Default, const ContextSettings& settings = ContextSettings());
 
         /**
          * @brief Creates a window from a video mode.
@@ -48,7 +90,7 @@ namespace kat {
          * @param style The style of the window.
          * @param settings The settings of the window.
          */
-        Window(sf::VideoMode mode, const std::string& title = "Kat", sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
+        Window(VideoMode mode, const std::string& title = "Kat", WindowStyle style = WindowStyle::Default, const ContextSettings& settings = ContextSettings());
 
         /**
          * @brief Creates a window from a handle.
@@ -56,7 +98,7 @@ namespace kat {
          * @param handle The handle of the window.
          * @param settings The settings of the window.
          */
-        Window(sf::WindowHandle handle, const sf::ContextSettings& settings = sf::ContextSettings());
+        Window(WindowHandle handle, const ContextSettings& settings = ContextSettings());
 
         /**
          * @brief Closes the window.
@@ -88,7 +130,7 @@ namespace kat {
          * @param limit The framerate limit.
          * @return Window& Reference to self.
          */
-        Window& setFps(unsigned int limit);
+        Window& setFps(const FpsLimit& limit);
 
         /**
          * @brief Checks if the window has focus.
@@ -99,18 +141,25 @@ namespace kat {
         bool hasFocus() const;
 
         /**
+         * @brief Gets the size of the window.
+         *
+         * @return WindowSize The size of the window.
+         */
+        WindowSize size() const;
+
+        /**
          * @brief Gets the handle of the window.
          * 
          * @return sf::RenderWindow& The handle of the window.
          */
-        sf::RenderWindow& getHandle();
+        sf::RenderWindow& get_handle();
 
         /**
          * @brief Gets the handle of the window. (const)
          * 
          * @return sf::RenderWindow& The handle of the window.
          */
-        const sf::RenderWindow& getHandle() const;
+        const sf::RenderWindow& get_handle() const;
 
         /**
          * @brief Draws a drawable to the window.

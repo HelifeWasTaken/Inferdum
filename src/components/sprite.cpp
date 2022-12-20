@@ -175,8 +175,13 @@ namespace kat {
         return m_sprite->getLocalBounds();
     }
 
-    sf::Sprite *Sprite::raw_handle() const
+    const sf::Sprite *Sprite::raw_handle() const
     {
         return m_sprite.get();
+    }
+
+    shared_drawable_t Sprite::as_drawable() const
+    {
+        return m_sprite;
     }
 }

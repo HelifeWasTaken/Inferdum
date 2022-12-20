@@ -11,6 +11,17 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-fconcepts)
 endif()
 
+include(FetchContent)
+
+FetchContent_Declare(
+    lua
+    GIT_REPOSITORY "https://github.com/HelifeWasTaken/lua"
+)
+
+FetchContent_MakeAvailable(lua)
+
+include_directories(${lua_SOURCE_DIR}/src)
+
 file(
     GLOB_RECURSE SRC
     src/*.cpp

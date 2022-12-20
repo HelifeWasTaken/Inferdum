@@ -2,24 +2,24 @@
 
 namespace kat {
 
-    Window& Window::create(sf::WindowHandle handle, const sf::ContextSettings& settings)
+    Window& Window::create(WindowHandle handle, const ContextSettings& settings)
     {
         m_window.create(handle, settings);
         return *this;
     }
 
-    Window& Window::create(sf::VideoMode mode, const std::string& title, sf::Uint32 style, const sf::ContextSettings& settings)
+    Window& Window::create(VideoMode mode, const std::string& title, WindowStyle style, const ContextSettings& settings)
     {
-        m_window.create(mode, title, style, settings);
+        m_window.create(mode, title, (sf::Uint32)style, settings);
         return *this;
     }
 
-    Window::Window(sf::VideoMode mode, const std::string& title, sf::Uint32 style, const sf::ContextSettings& settings)
+    Window::Window(VideoMode mode, const std::string& title, WindowStyle style, const ContextSettings& settings)
     {
         create(mode, title, style, settings);
     }
 
-    Window::Window(sf::WindowHandle handle, const sf::ContextSettings& settings)
+    Window::Window(WindowHandle handle, const ContextSettings& settings)
     {
         create(handle, settings);
     }
@@ -40,7 +40,7 @@ namespace kat {
         return m_window.pollEvent(event);
     }
 
-    Window& Window::setFps(unsigned int limit)
+    Window& Window::setFps(const FpsLimit& limit)
     {
         m_window.setFramerateLimit(limit);
         return *this;
@@ -51,12 +51,17 @@ namespace kat {
         return m_window.hasFocus();
     }
 
-    sf::RenderWindow& Window::getHandle()
+    WindowSize Window::size() const
+    {
+        return m_window.getSize();
+    }
+
+    sf::RenderWindow& Window::get_handle()
     {
         return m_window;
     }
 
-    const sf::RenderWindow& Window::getHandle() const
+    const sf::RenderWindow& Window::get_handle() const
     {
         return m_window;
     }

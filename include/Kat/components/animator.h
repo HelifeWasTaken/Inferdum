@@ -43,7 +43,7 @@ namespace kat {
      */
     struct Animation {
         FrameList frames;         ///< The list of frames in the animation.
-        FrameTime frame_time = 0.2; ///< The time each frame is displayed.
+        FrameTime speed = 0.2; ///< The time each frame is displayed.
         bool loop = true;         ///< Whether the animation should loop.
 
         /**
@@ -72,7 +72,7 @@ namespace kat {
          * @brief Set the time each frame is displayed.
          * @param frame_time The time to display each frame.
          */
-        void setFrameTime(const FrameTime& frame_time);
+        void setSpeed(const FrameTime& frame_time);
 
         /**
          * @brief Set whether the animation should loop.

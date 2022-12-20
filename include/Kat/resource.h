@@ -1,15 +1,16 @@
 #pragma once
 
-#include "components/texture.h"
 #include <typeindex>
 #include <unordered_map>
 #include <any>
 
+#include "./components/texture.h"
+
 namespace kat {
 
     using Resource     = std::any;
-    using ResourceType = std::type_index;
-    using ResourceName = std::string;
+    using ResourceType = const char *;
+    using ResourceName = std::string; 
     using ResourceMap  = std::unordered_map<ResourceName, Resource>;
     using ResourceMapRegistry = std::unordered_map<ResourceType, ResourceMap>;
 
@@ -34,8 +35,9 @@ namespace kat {
          * @brief Default constructor, it will setup every trivial resource.
          */
         ResourceManager() {
-            m_registry[typeid(Texture)] = ResourceMap();
-            m_registry[typeid(Texture)].emplace("default", std::any(Texture()));
+            const auto typid = typeid(Texture).name();
+            m_registry[typid] = ResourceMap();
+            m_registry[typid].emplace("default", std::any(Texture()));
         }
 
         /**
@@ -50,7 +52,7 @@ namespace kat {
          */
         template<typename T>
         void addResource(const ResourceName& name, const T& resource) {
-            constexpr auto typid = typeid(T);
+            const auto typid = typeid(T).name();
             if (m_registry.find(typid) == m_registry.end())
                 m_registry[typid] = ResourceMap();
             m_registry[typid].emplace(name, std::any(resource));
@@ -63,7 +65,7 @@ namespace kat {
          */
         template<typename T>
         void addResource(const ResourceName& name, T&& resource) {
-            constexpr auto typid = typeid(T);
+            const auto typid = typeid(T).name();
             if (m_registry.find(typid) == m_registry.end())
                 m_registry[typid] = ResourceMap();
             m_registry[typid].emplace(name, std::any(std::move(resource)));
@@ -76,7 +78,7 @@ namespace kat {
          */
         template<typename T>
         T &getResource(const ResourceName& name) {
-            constexpr auto typid = typeid(T);
+            const auto typid = typeid(T).name();
             const auto type = m_registry.find(typid);
             if (type == m_registry.end())
                 throw std::runtime_error("Resource type not found.");
@@ -93,7 +95,7 @@ namespace kat {
          */
         template<typename T>
         const T &getResource(const ResourceName& name) const {
-            constexpr auto typid = typeid(T);
+            const auto typid = typeid(T).name();
             const auto type = m_registry.find(typid);
             if (type == m_registry.end())
                 throw std::runtime_error("Resource type not found.");

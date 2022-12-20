@@ -1,7 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics/Sprite.hpp>
-#include "texture.h"
+
+#include "./texture.h"
+#include "../batch.h"
 
 namespace kat {
 
@@ -269,7 +271,8 @@ namespace kat {
         Sprite() = default;
         ~Sprite() = default;
 
-        sf::Sprite *raw_handle() const;
+        const sf::Sprite *raw_handle() const;
+        shared_drawable_t as_drawable() const;
 
     private:
         Texture m_texture;
