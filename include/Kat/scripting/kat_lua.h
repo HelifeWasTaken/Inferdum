@@ -143,8 +143,8 @@ namespace kat {
                 "copyTexture", [](Texture& self, const Texture& other_texture)
                 { return self.load(other_texture); },
 
-                "loadFromMemory", [](Texture& self, const std::string& data)
-                { return self.load(data); },
+                "loadFromMemory", [](Texture& self, const void *data, u64 size)
+                { return self.load((Memory)data, size); },
 
                 "windowToTexture", [](Texture& self, Window& window) {
                     if (self.size() == TextureSize(0, 0)) {
@@ -153,17 +153,11 @@ namespace kat {
                     self.update(window);
                     return self;
                 },
-                "setSmooth", [](Texture& self, bool smooth)
-                { return self.setSmooth(smooth); },
+                "setSmooth", &Texture::setSmooth,
+                "isSmooth", &Texture::isSmooth,
 
-                "setRepeated", [](Texture& self, bool repeated)
-                { return self.repeated(repeated); },
-
-                "isSmooth", [](Texture& self)
-                { return self.isSmooth(); },
-
-                "isRepeated", [](Texture& self)
-                { return self.repeated(); }
+                "isRepeated", [](Texture& self) { return self.repeated(); },
+                "setRepeated", [](Texture& self, bool repeated) { self.repeated(repeated); return self; }
             );
         }
 
@@ -193,49 +187,40 @@ namespace kat {
                         matrix[6], matrix[7], matrix[8]
                     };
                 },
-                "getInverse",
-                [](Transform& self) {
-                    return self.getInverse();
-                },
+
+                "getInverse", &Transform::getInverse,
+
                 "transformPoint",
-                [](Transform& self, const Position& point) {
-                    return self.transformPoint(point);
-                },
+                [](Transform& self, const Position& point)
+                { self.transformPoint(point); return self; },
+
                 "transformRect",
-                [](Transform& self, const sf::FloatRect& rect) {
-                    return self.transformRect(rect);
-                },
-                "combine",
-                [](Transform& self, const Transform& other) {
-                    self.combine(other);
-                    return self;
-                },
-                "translate",
-                [](Transform& self, const Position& offset) {
-                    self.translate(offset);
-                    return self;
-                },
+                [](Transform& self, const sf::FloatRect& rect)
+                { self.transformRect(rect); return self; },
+
+                "combine", &Transform::combine,
+
+                "translate", 
+                [](Transform& self, const Position& offset)
+                { return self.translate(offset); },
+
                 "rotate",
-                [](Transform& self, f32 angle) {
-                    self.rotate(angle);
-                    return self;
-                },
+                [](Transform& self, f32 angle)
+                { return self.rotate(angle); },
+
                 "rotateAround",
-                [](Transform& self, f32 angle, const Position& center) {
-                    self.rotate(angle, center);
-                    return self;
-                },
+                [](Transform& self, f32 angle, const Position& center)
+                { return self.rotate(angle, center); },
+
                 "scale",
-                [](Transform& self, const Scale& factors) {
-                    self.scale(factors);
-                    return self;
-                },
+                [](Transform& self, const Scale& factors)
+                { return self.scale(factors.x, factors.y); },
+
                 "scaleAround",
-                [](Transform& self, const Scale& factors, const Position& center) {
-                    self.scale(factors, center);
-                    return self;
-                }
+                [](Transform& self, const Scale& factors, const Position& center)
+                { return self.scale(factors.x, factors.y, center.x, center.y); }
             );
+
 
             generate_rect<f32>("GlobalBounds");
             generate_rect<f32>("LocalBounds");
@@ -451,6 +436,119 @@ namespace kat {
 
         void load_input_manager_api()
         {
+            m_kat["InputState::Idle"] = InputState::Idle;
+            m_kat["InputState::Released"] = InputState::Released;
+            m_kat["InputState::Pressed"] = InputState::Pressed;
+            m_kat["InputState::Held"] = InputState::Held;
+
+            m_kat["Joystick::Count"] = Joystick::Count;
+            m_kat["Joystick::ButtonCount"] = Joystick::ButtonCount;
+            m_kat["Joystick::AxisCount"] = Joystick::AxisCount;
+
+            m_kat["Joystick::Axis::X"] = Joystick::Axis::X;
+            m_kat["Joystick::Axis::Y"] = Joystick::Y;
+            m_kat["Joystick::Axis::Z"] = Joystick::Z;
+            m_kat["Joystick::Axis::R"] = Joystick::R;
+            m_kat["Joystick::Axis::U"] = Joystick::U;
+            m_kat["Joystick::Axis::V"] = Joystick::V;
+            m_kat["Joystick::Axis::PovX"] = Joystick::PovX;
+            m_kat["Joystick::Axis::PovY"] = Joystick::PovY;
+
+            m_kat["Keyboard::K_UNKNOWN"] = Keyboard::Key::Unknown;
+
+            for (u32 i = 0; i < Keyboard::Key::Z - Keyboard::Key::A; ++i) {
+                const std::string key = "Keyboard::K_" + std::to_string('A' + i);
+                m_kat[key] = static_cast<Keyboard::Key>(Keyboard::Key::A + i);
+            }
+            for (u32 i = 0; i < Keyboard::Key::Num9 - Keyboard::Key::Num0; ++i) {
+                const std::string key = "Keyboard::K_" + std::to_string('0' + i);
+                m_kat[key] = static_cast<Keyboard::Key>(Keyboard::Key::Num0 + i);
+            }
+            m_kat["K_ESCAPE"] = Keyboard::Key::Escape;
+            m_kat["K_LCONTROL"] = Keyboard::Key::LControl;
+            m_kat["K_LSHIFT"] = Keyboard::Key::LShift;
+            m_kat["K_LALT"] = Keyboard::Key::LAlt;
+            m_kat["K_LSYSTEM"] = Keyboard::Key::LSystem;
+            m_kat["K_RCONTROL"] = Keyboard::Key::RControl;
+            m_kat["K_RSHIFT"] = Keyboard::Key::RShift;
+            m_kat["K_RALT"] = Keyboard::Key::RAlt;
+            m_kat["K_RSYSTEM"] = Keyboard::Key::RSystem;
+            m_kat["K_MENU"] = Keyboard::Key::Menu;
+            m_kat["K_LBRACKET"] = Keyboard::Key::LBracket;
+            m_kat["K_RBRACKET"] = Keyboard::Key::RBracket;
+            m_kat["K_SEMICOLON"] = Keyboard::Key::SemiColon;
+            m_kat["K_COMMA"] = Keyboard::Key::Comma;
+            m_kat["K_PERIOD"] = Keyboard::Key::Period;
+            m_kat["K_QUOTE"] = Keyboard::Key::Quote;
+            m_kat["K_SLASH"] = Keyboard::Key::Slash;
+            m_kat["K_BACKSLASH"] = Keyboard::Key::BackSlash;
+            m_kat["K_TILDE"] = Keyboard::Key::Tilde;
+            m_kat["K_EQUAL"] = Keyboard::Key::Equal;
+            m_kat["K_DASH"] = Keyboard::Key::Dash;
+            m_kat["K_SPACE"] = Keyboard::Key::Space;
+            m_kat["K_RETURN"] = Keyboard::Key::Enter;
+            m_kat["K_ENTER"] = Keyboard::Key::Enter;
+            m_kat["K_BACKSPACE"] = Keyboard::Key::BackSpace;
+            m_kat["K_TAB"] = Keyboard::Key::Tab;
+            m_kat["K_PAGEUP"] = Keyboard::Key::PageUp;
+            m_kat["K_PAGEDOWN"] = Keyboard::Key::PageDown;
+            m_kat["K_END"] = Keyboard::Key::End;
+            m_kat["K_HOME"] = Keyboard::Key::Home;
+            m_kat["K_INSERT"] = Keyboard::Key::Insert;
+            m_kat["K_DELETE"] = Keyboard::Key::Delete;
+            m_kat["K_ADD"] = Keyboard::Key::Add;
+            m_kat["K_SUBTRACT"] = Keyboard::Key::Subtract;
+            m_kat["K_MULTIPLY"] = Keyboard::Key::Multiply;
+            m_kat["K_DIVIDE"] = Keyboard::Key::Divide;
+            m_kat["K_LEFT"] = Keyboard::Key::Left;
+            m_kat["K_RIGHT"] = Keyboard::Key::Right;
+            m_kat["K_UP"] = Keyboard::Key::Up;
+            m_kat["K_DOWN"] = Keyboard::Key::Down;
+            for (u32 i = 0; i < Keyboard::Key::Numpad9 - Keyboard::Key::Numpad0; ++i) {
+                const std::string key = "Keyboard::K_NUMPAD" + std::to_string('0' + i);
+                m_kat[key] = static_cast<Keyboard::Key>(Keyboard::Key::Numpad0 + i);
+            }
+            for (u32 i = 0; i < Keyboard::Key::F15 - Keyboard::Key::F1; ++i) {
+                const std::string key = "Keyboard::K_F" + std::to_string('1' + i);
+                m_kat[key] = static_cast<Keyboard::Key>(Keyboard::Key::F1 + i);
+            }
+            m_kat["Keyboard::K_PAUSE"] = Keyboard::Key::Pause;
+
+            m_kat["Mouse::Button::Left"] = Mouse::Button::Left;
+            m_kat["Mouse::Button::Right"] = Mouse::Button::Right;
+            m_kat["Mouse::Button::Middle"] = Mouse::Button::Middle;
+            m_kat["Mouse::Button::XButton1"] = Mouse::Button::XButton1;
+            m_kat["Mouse::Button::XButton2"] = Mouse::Button::XButton2;
+
+            m_kat["Mouse::Wheel::VerticalWheel"] = Mouse::Wheel::VerticalWheel;
+            m_kat["Mouse::Wheel::HorizontalWheel"] = Mouse::Wheel::HorizontalWheel;
+
+            m_kat.new_usertype<InputManager>("InputManager",
+                "update",
+                &InputManager::update,
+                "nextFrame",
+                &InputManager::nextFrame,
+                "isJoystickConnected",
+                &InputManager::isJoystickConnected,
+                "getJoystickAxisPosition",
+                &InputManager::getJoystickAxisPosition,
+                "getJoystickButtonState",
+                &InputManager::getJoystickButtonState,
+                "getKeyState",
+                &InputManager::getKeyState,
+                "getMouseButtonState",
+                &InputManager::getMouseButtonState,
+                "getMousePosition",
+                &InputManager::getMousePosition,
+                "setMousePosition",
+                [](InputManager& inputManager, const MousePosition& position) {
+                    inputManager.setMousePosition(position);
+                },
+                "setMousePositionRelative",
+                [](InputManager& inputManager, const MousePosition& position, const Window& window) {
+                    return inputManager.setMousePosition(position, window.get_handle());
+                }
+            );
         }
 
     public:

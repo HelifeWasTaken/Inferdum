@@ -33,5 +33,6 @@ file(
 include_directories(include)
 
 add_library(${PROJECT_NAME} STATIC ${SRC})
+target_link_libraries(${PROJECT_NAME} lua sfml-graphics sfml-window sfml-system)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})

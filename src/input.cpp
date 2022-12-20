@@ -17,7 +17,7 @@ namespace kat {
         }
     }
 
-    void InputManager::updateJoystickEvent(sf::Event& event)
+    void InputManager::updateJoystickEvent(Event& event)
     {
         switch (event.type) {
         case sf::Event::JoystickConnected:
@@ -40,7 +40,7 @@ namespace kat {
         }
     }
 
-    void InputManager::updateKeyboardEvent(sf::Event& event)
+    void InputManager::updateKeyboardEvent(Event& event)
     {
         switch (event.type) {
         case sf::Event::KeyPressed:
@@ -54,7 +54,7 @@ namespace kat {
         }
     }
 
-    void InputManager::updateMouseEvent(sf::Event& event)
+    void InputManager::updateMouseEvent(Event& event)
     {
         switch (event.type) {
         case sf::Event::MouseButtonPressed:
@@ -118,27 +118,27 @@ namespace kat {
         m_Instance->_nextFrame();
     }
 
-    bool InputManager::isJoystickConnected(unsigned int joystick_id)
+    bool InputManager::isJoystickConnected(const JoystickId& joystick_id)
     {
         return m_Instance->m_Joysticks[joystick_id].m_Connected;
     }
 
-    float InputManager::getJoystickAxisPosition(unsigned int joystick_id, sf::Joystick::Axis axis)
+    float InputManager::getJoystickAxisPosition(const JoystickId& joystick_id, const Joystick::Axis& axis)
     {
         return m_Instance->m_Joysticks[joystick_id].m_Axes[axis];
     }
 
-    InputState InputManager::getJoystickButtonState(unsigned int joystick_id, unsigned int button)
+    InputState InputManager::getJoystickButtonState(const JoystickId& joystick_id, const JoystickButton& button)
     {
         return m_Instance->m_Joysticks[joystick_id].m_Buttons[button];
     }
 
-    InputState InputManager::getKeyState(sf::Keyboard::Key key)
+    InputState InputManager::getKeyState(const Keyboard::Key& key)
     {
         return m_Instance->m_Keys[key];
     }
 
-    InputState InputManager::getMouseButtonState(sf::Mouse::Button button)
+    InputState InputManager::getMouseButtonState(const Mouse::Button& button)
     {
         return m_Instance->m_MouseButtons[button];
     }
@@ -148,12 +148,12 @@ namespace kat {
         return sf::Mouse::getPosition();
     }
 
-    void InputManager::setMousePosition(const sf::Vector2i& position)
+    void InputManager::setMousePosition(const MousePosition& position)
     {
         sf::Mouse::setPosition(position);
     }
 
-    void InputManager::setMousePosition(const sf::Vector2i& position, const sf::Window& relative_to)
+    void InputManager::setMousePosition(const MousePosition& position, const sf::Window& relative_to)
     {
         sf::Mouse::setPosition(position, relative_to);
     }

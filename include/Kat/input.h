@@ -13,6 +13,15 @@ enum class InputState {
     Held
 };
 
+using Joystick = sf::Joystick;
+using Keyboard = sf::Keyboard;
+using Mouse = sf::Mouse;
+using Event = sf::Event;
+using JoystickId = unsigned int;
+using JoystickButton = unsigned int;
+using MouseButton = sf::Mouse::Button;
+using MousePosition = sf::Vector2i;
+
 /**
  * \class InputManager
  *
@@ -29,15 +38,15 @@ private:
      */
     struct JoystickState {
         bool m_Connected = false; ///< Indicates whether the joystick is connected.
-        float m_Axes[sf::Joystick::AxisCount] = {0.0f}; ///< The values of the joystick axes.
-        InputState m_Buttons[sf::Joystick::ButtonCount] = {InputState::Idle}; ///< The states of the joystick buttons.
+        float m_Axes[Joystick::AxisCount] = {0.0f}; ///< The values of the joystick axes.
+        InputState m_Buttons[Joystick::ButtonCount] = {InputState::Idle}; ///< The states of the joystick buttons.
     };
         
-    JoystickState m_Joysticks[sf::Joystick::Count]; ///< The states of all joysticks.
+    JoystickState m_Joysticks[Joystick::Count]; ///< The states of all joysticks.
 
-    InputState m_Keys[sf::Keyboard::KeyCount] = {InputState::Idle}; ///< The states of all keyboard keys.
+    InputState m_Keys[Keyboard::KeyCount] = {InputState::Idle}; ///< The states of all keyboard keys.
 
-    InputState m_MouseButtons[sf::Mouse::ButtonCount] = {InputState::Idle}; ///< The states of all mouse buttons.
+    InputState m_MouseButtons[Mouse::ButtonCount] = {InputState::Idle}; ///< The states of all mouse buttons.
 
     static InputManager *m_Instance; ///< The singleton instance of the InputManager.
 
@@ -61,21 +70,21 @@ private:
      *
      * \param[in] event The event to process.
      */
-    void updateJoystickEvent(sf::Event& event);
+    void updateJoystickEvent(Event& event);
 
     /**
      * \brief Updates the state of the keyboard based on the given event.
      *
      * \param[in] event The event to process.
      */
-    void updateKeyboardEvent(sf::Event& event);
+    void updateKeyboardEvent(Event& event);
 
     /**
      * \brief Updates the state of the mouse based on the given event.
      *
      * \param[in] event The event to process.
      */
-    void updateMouseEvent(sf::Event& event);
+    void updateMouseEvent(Event& event);
 
     /**
      * \brief Polls events from the window and passes them to the appropriate event updating method.
@@ -119,7 +128,7 @@ public:
      * @param joystick_id The ID of the joystick to check.
      * @return True if the joystick is connected, false if not.
      */
-    static bool isJoystickConnected(unsigned int joystick_id);
+    static bool isJoystickConnected(const JoystickId& joystick_id);
 
     /**
      * @brief Get the position of a joystick axis.
@@ -127,7 +136,7 @@ public:
      * @param axis The axis to check.
      * @return The position of the joystick axis, in the range [-100, 100].
      */
-    static float getJoystickAxisPosition(unsigned int joystick_id, sf::Joystick::Axis axis);
+    static float getJoystickAxisPosition(const JoystickId& joystick_id, const Joystick::Axis& axis);
 
     /**
      * @brief Get the state of a joystick button.
@@ -135,40 +144,40 @@ public:
      * @param button The button to check.
      * @return The state of the joystick button.
      */
-    static InputState getJoystickButtonState(unsigned int joystick_id, unsigned int button);
+    static InputState getJoystickButtonState(const JoystickId& joystick_id, const JoystickButton& button);
 
     /**
      * @brief Get the state of a keyboard key.
      * @param key The key to check.
      * @return The state of the keyboard key.
      */
-    static InputState getKeyState(sf::Keyboard::Key key);
+    static InputState getKeyState(const Keyboard::Key& key);
 
     /**
      * @brief Get the state of a mouse button.
      * @param button The button to check.
      * @return The state of the mouse button.
      */
-    static InputState getMouseButtonState(sf::Mouse::Button button);
+    static InputState getMouseButtonState(const Mouse::Button& button);
 
     /**
      * @brief Get the current position of the mouse.
      * @return The current position of the mouse.
      */
-    static sf::Vector2i getMousePosition();
+    static MousePosition getMousePosition();
 
     /**
      * @brief Set the position of the mouse.
      * @param position The new position of the mouse.
      */
-    static void setMousePosition(const sf::Vector2i& position);
+    static void setMousePosition(const MousePosition& position);
 
     /**
      * @brief Set the position of the mouse relative to a window.
      * @param position The new position of the mouse.
      * @param relative_to The window to use as a reference for the mouse position.
      */
-    static void setMousePosition(const sf::Vector2i& position, const sf::Window& relative_to);
+    static void setMousePosition(const MousePosition& position, const sf::Window& relative_to);
 };
 
 }
