@@ -35,10 +35,13 @@ include_directories(${sfml_SOURCE_DIR}/include)
 
 file(
     GLOB_RECURSE SRC
-    src/*.cpp
-    include/*.hpp
-    include/*.h
-    src/*.c
+
+    src/*.c src/*.cpp
+
+    include/*.h include/*.hpp
+
+    src/imgui/*.c src/imgui/*.cpp
+    src/imgui/*.h src/imgui/*.hpp
 )
 
 include_directories(include src/imgui)
@@ -49,7 +52,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
 
 add_executable(${PROJECT_NAME}_test App/App.cpp)
 
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} sfml-graphics sfml-window sfml-system lua::lua)
+target_link_libraries(
+        ${PROJECT_NAME}_test
+        sfml-graphics sfml-window sfml-system
+        lua::lua ${PROJECT_NAME}
+)
 
 if (UNIX)
     target_link_libraries(${PROJECT_NAME}_test pthread GL dl)

@@ -12,7 +12,6 @@ namespace kat {
      */
     using shared_sprite_t = std::shared_ptr<sf::Sprite>;
 
-
     /**
      * @brief An angle
      */

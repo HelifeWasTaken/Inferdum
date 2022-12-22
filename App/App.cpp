@@ -2,10 +2,14 @@
 #include <SFML/Graphics.hpp>
 #include <imgui.h>
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(sf::Vector2u(800, 600)), "ImGui + SFML = <3");
-    sf::Clock        deltaClock;
+#include <SFML/System/Clock.hpp>
+#include <SFML/Window/Event.hpp>
+
+#include <windows.h>
+int main() {
+    BuiltinWindow window(sf::VideoMode(sf::Vector2u(1280, 720)), "ImGui + SFML = <3");
+
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui::SFML::Init(window);
 
@@ -14,22 +18,20 @@ int main()
         while (window.pollEvent(event)) {
             ImGui::SFML::ProcessEvent(event);
 
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
         }
 
-        ImGui::SFML::Update(window, deltaClock.restart());
+        ImGui::SFML::Update(window, sf::seconds(1.f / 60.f));
 
         ImGui::Begin("Hello, world!");
-        ImGui::Text("This is some useful text.");
+        // demo window
+        ImGui::ShowDemoWindow();
         ImGui::End();
 
         window.clear();
         ImGui::SFML::Render(window);
         window.display();
     }
-
-    ImGui::SFML::Shutdown();
-
-    return 0;
 }
