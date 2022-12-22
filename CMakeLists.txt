@@ -49,4 +49,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
 
 add_executable(${PROJECT_NAME}_test App/App.cpp)
 
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} sfml-graphics sfml-window sfml-system GL lua::lua)
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} sfml-graphics sfml-window sfml-system lua::lua)
+
+if (UNIX)
+    target_link_libraries(${PROJECT_NAME}_test pthread GL dl)
+else()
+    target_link_libraries(${PROJECT_NAME}_test opengl32)
+endif()
