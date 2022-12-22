@@ -26,96 +26,94 @@ namespace kat {
 
     Sprite& Sprite::setPosition(const Coordinate& x, const Coordinate& y)
     {
-        m_sprite->setPosition(x, y);
-        return *this;
+        return setPosition({ x, y });
     }
 
     Sprite& Sprite::setPosition(const Position& position)
     {
-        return setPosition(position.x, position.y);
+        m_sprite->setPosition(position);
+        return *this;
     }
 
-    Sprite& Sprite::setRotation(const Angle& angle, const bool& is_radians)
+    Sprite& Sprite::setRotation(const Angle& angle)
     {
-        m_sprite->setRotation(is_radians ? math::asDegrees(angle) : angle);
+        m_sprite->setRotation(angle);
         return *this;
     }
 
     Sprite& Sprite::setScale(const ScaleFactor& x, const ScaleFactor& y)
     {
-        m_sprite->setScale(x, y);
-        return *this;
+        return setScale({ x, y });
     }
 
     Sprite& Sprite::setScale(const Scale& scale)
     {
-        return setScale(scale.x, scale.y);
+        m_sprite->setScale(scale);
+        return *this;
     }
 
     Sprite& Sprite::setOrigin(const Coordinate& x, const Coordinate& y)
     {
-        m_sprite->setOrigin(x, y);
-        return *this;
+        return setOrigin({ x, y });
     }
 
     Sprite& Sprite::setOrigin(const Position& origin)
     {
-        return setOrigin(origin.x, origin.y);
+        m_sprite->setOrigin(origin);
+        return *this;
     }
 
-    const Position& Sprite::getPosition() const
+    Position Sprite::getPosition() const
     {
         return m_sprite->getPosition();
     }
 
-    Angle Sprite::getRotation(bool as_radians) const
+    Angle Sprite::getRotation() const
     {
-        return as_radians ?
-            math::asRadians(m_sprite->getRotation()) :
-            m_sprite->getRotation();
+        return m_sprite->getRotation();
     }
 
-    const Scale& Sprite::getScale() const
+    Scale Sprite::getScale() const
     {
         return m_sprite->getScale();
     }
 
-    const Position& Sprite::getOrigin() const
+    Position Sprite::getOrigin() const
     {
         return m_sprite->getOrigin();
     }
 
     Sprite& Sprite::move(const Coordinate& x, const Coordinate& y)
     {
-        m_sprite->move(x, y);
-        return *this;
+        return move({ x, y });
     }
 
     Sprite& Sprite::move(const Position& offset)
     {
-        return move(offset.x, offset.y);
+        m_sprite->move(offset);
+        return *this;
     }
 
-    Sprite& Sprite::rotate(const Angle& angle, bool is_radians)
+    Sprite& Sprite::rotate(const Angle& angle)
     {
-        m_sprite->rotate(is_radians ? math::asDegrees(angle) : angle);
+        m_sprite->rotate(angle);
         return *this;
     }
 
     Sprite& Sprite::scale(const ScaleFactor& x, const ScaleFactor& y)
     {
-        m_sprite->scale(x, y);
-        return *this;
+        return scale({ x, y });
     }
 
     Sprite& Sprite::scale(const Scale& pscale)
     {
-        return scale(pscale.x, pscale.y);
+        m_sprite->scale(pscale);
+        return *this;
     }
 
     Sprite& Sprite::scale(const ScaleFactor& factor)
     {
-        return scale(factor, factor);
+        return scale({ factor, factor });
     }
 
     const Transform& Sprite::getTransform() const
@@ -139,7 +137,7 @@ namespace kat {
         return *this;
     }
 
-    const Frame& Sprite::getTextureRect() const
+    Frame Sprite::getTextureRect() const
     {
         return m_sprite->getTextureRect();
     }

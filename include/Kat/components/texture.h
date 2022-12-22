@@ -18,7 +18,7 @@ namespace kat {
     /**
      * @brief A single frame of an animation.
      */
-    using Frame = sf::IntRect;
+    using Frame = IntRect;
 
     /**
      * @brief A texture coordinate.
@@ -28,12 +28,12 @@ namespace kat {
     /**
      * @brief A frame size.
      */
-    using FrameSize = sf::Vector2<TextureCoordinate>;
+    using FrameSize = Vector2<TextureCoordinate>;
 
     /**
      * @brief A texture size.
      */
-    using TextureSize = sf::Vector2<TextureCoordinate>;
+    using TextureSize = Vector2<TextureCoordinate>;
 
     /**
      * @brief A coordinate.
@@ -43,7 +43,7 @@ namespace kat {
     /**
      * @brief A position.
      */
-    using Position = sf::Vector2<Coordinate>;
+    using Position = Vector2<Coordinate>;
 
 
     class Texture {

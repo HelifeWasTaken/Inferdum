@@ -8,8 +8,11 @@ set(CMAKE_CXX_STANDARD 20)
 add_compile_definitions(_WIN32_WINT=0x0601)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-fconcepts)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -fconcepts")
 endif()
+
+set(LUA_BUILD_COMPILER OFF CACHE INTERNAL "")
+set(LUA_BUILD_INTERPRETER OFF CACHE INTERNAL "")
 
 include(FetchContent)
 
@@ -20,7 +23,15 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(lua)
 
+FetchContent_Declare(
+	sfml
+	GIT_REPOSITORY "https://github.com/SFML/SFML"
+)
+
+FetchContent_MakeAvailable(sfml)
+
 include_directories(${lua_SOURCE_DIR}/src)
+include_directories(${sfml_SOURCE_DIR}/include)
 
 file(
     GLOB_RECURSE SRC
@@ -30,9 +41,12 @@ file(
     src/*.c
 )
 
-include_directories(include)
+include_directories(include src/imgui)
 
 add_library(${PROJECT_NAME} STATIC ${SRC})
-target_link_libraries(${PROJECT_NAME} lua sfml-graphics sfml-window sfml-system)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
+
+add_executable(${PROJECT_NAME}_test App/App.cpp)
+
+target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} sfml-graphics sfml-window sfml-system GL lua::lua)

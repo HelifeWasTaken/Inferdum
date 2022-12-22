@@ -18,38 +18,38 @@ namespace kat {
 
         template<typename T>
         Lua& generate_vec2(const std::string& name) {
-            m_kat.new_usertype<sf::Vector2<T>>(name,
-                sol::constructors<sf::Vector2<T>(), sf::Vector2<T>(T, T)>(),
-                "x", &sf::Vector2<T>::x,
-                "y", &sf::Vector2<T>::y
+            m_kat.new_usertype<Vector2<T>>(name,
+                sol::constructors<Vector2<T>(), Vector2<T>(T, T)>(),
+                "x", &Vector2<T>::x,
+                "y", &Vector2<T>::y
             );
             return *this;
-        };
+        }
 
         template<typename T>
         Lua& generate_vec3(const std::string& name) {
-            m_kat.new_usertype<sf::Vector3<T>>(name,
-                sol::constructors<sf::Vector3<T>(), sf::Vector3<T>(T, T, T)>(),
-                "x", &sf::Vector3<T>::x,
-                "y", &sf::Vector3<T>::y,
-                "z", &sf::Vector3<T>::z
+            m_kat.new_usertype<Vector3<T>>(name,
+                sol::constructors<Vector3<T>(), Vector3<T>(T, T, T)>(),
+                "x", &Vector3<T>::x,
+                "y", &Vector3<T>::y,
+                "z", &Vector3<T>::z
             );
             return *this;
-        };
+        }
 
         template<typename T>
         Lua& generate_rect(const std::string& name) {
-            m_kat.new_usertype<sf::Rect<T>>(name,
-                sol::constructors<sf::Rect<T>(), sf::Rect<T>(T, T, T, T)>(),
-                "left", &sf::Rect<T>::top,
-                "top", &sf::Rect<T>::left,
-                "x", &sf::Rect<T>::left,
-                "y", &sf::Rect<T>::top,
-                "width", &sf::Rect<T>::width,
-                "height", &sf::Rect<T>::height
+            m_kat.new_usertype<Rect<T>>(name,
+                sol::constructors<Rect<T>(), Rect<T>(T, T, T, T)>(),
+                "left", &Rect<T>::top,
+                "top", &Rect<T>::left,
+                "x", &Rect<T>::left,
+                "y", &Rect<T>::top,
+                "width", &Rect<T>::width,
+                "height", &Rect<T>::height
             );
             return *this;
-        };
+        }
 
         void load_basic_vector_types()
         {
@@ -91,9 +91,8 @@ namespace kat {
             m_kat["ContextAttribute::Debug"] = ContextAttribute::Debug;
 
             m_kat.new_usertype<VideoMode>("VideoMode",
-                sol::constructors<VideoMode()>(),
-                "width", &VideoMode::width,
-                "height", &VideoMode::height,
+                sol::constructors<VideoMode(), VideoMode(const Vector2<u32>&, u32)>(),
+                "size", &VideoMode::size,
                 "bitsPerPixel", &VideoMode::bitsPerPixel
             );
 
@@ -173,6 +172,11 @@ namespace kat {
                 "a", &Color::a
             );
 
+            m_kat.new_usertype<Angle>("Angle",
+                "asDegrees", &Angle::asDegrees,
+                "asRadians", &Angle::asRadians
+            );
+
             m_kat.new_usertype<Transform>("Transform",
                 sol::constructors<
                     Transform(),
@@ -195,7 +199,7 @@ namespace kat {
                 { self.transformPoint(point); return self; },
 
                 "transformRect",
-                [](Transform& self, const sf::FloatRect& rect)
+                [](Transform& self, const FloatRect& rect)
                 { self.transformRect(rect); return self; },
 
                 "combine", &Transform::combine,
@@ -206,21 +210,28 @@ namespace kat {
 
                 "rotate",
                 [](Transform& self, f32 angle)
-                { return self.rotate(angle); },
+                { return self.rotate(sf::degrees(angle)); },
+
+                "rotateRad",
+                [](Transform& self, f32 angle)
+                { return self.rotate(sf::radians(angle)); },
 
                 "rotateAround",
                 [](Transform& self, f32 angle, const Position& center)
-                { return self.rotate(angle, center); },
+                { return self.rotate(sf::degrees(angle), center); },
+
+                "rotateAroundRad",
+                [](Transform& self, f32 angle, const Position& center)
+                { return self.rotate(sf::radians(angle), center); },
 
                 "scale",
                 [](Transform& self, const Scale& factors)
-                { return self.scale(factors.x, factors.y); },
+                { return self.scale(factors); },
 
                 "scaleAround",
                 [](Transform& self, const Scale& factors, const Position& center)
-                { return self.scale(factors.x, factors.y, center.x, center.y); }
+                { return self.scale(factors, center); }
             );
-
 
             generate_rect<f32>("GlobalBounds");
             generate_rect<f32>("LocalBounds");
@@ -237,11 +248,11 @@ namespace kat {
                 },
                 "setRotation",
                 [](Sprite& self, f32 angle) {
-                    return self.setRotation(angle);
+                    return self.setRotation(sf::degrees(angle));
                 },
                 "setRotationRad",
                 [](Sprite& self, f32 angle) {
-                    return self.setRotation(angle, true);
+                    return self.setRotation(sf::radians(angle));
                 },
                 "setScale",
                 [](Sprite& self, const Scale& scale) {
@@ -257,11 +268,11 @@ namespace kat {
                 },
                 "getRotation",
                 [](Sprite& self) {
-                    return self.getRotation();
+                    return self.getRotation().asDegrees();
                 },
                 "getRotationRad",
                 [](Sprite& self) {
-                    return self.getRotation(true);
+                    return self.getRotation().asRadians();
                 },
                 "getScale",
                 [](Sprite& self) {
@@ -277,11 +288,11 @@ namespace kat {
                 },
                 "rotate",
                 [](Sprite& self, f32 angle) {
-                    return self.rotate(angle);
+                    return self.rotate(sf::degrees(angle));
                 },
                 "rotateRad",
                 [](Sprite& self, f32 angle) {
-                    return self.rotate(angle, true);
+                    return self.rotate(sf::radians(angle));
                 },
                 "scale",
                 [](Sprite& self, const Scale& factors) {
@@ -476,19 +487,18 @@ namespace kat {
             m_kat["K_MENU"] = Keyboard::Key::Menu;
             m_kat["K_LBRACKET"] = Keyboard::Key::LBracket;
             m_kat["K_RBRACKET"] = Keyboard::Key::RBracket;
-            m_kat["K_SEMICOLON"] = Keyboard::Key::SemiColon;
+            m_kat["K_SEMICOLON"] = Keyboard::Key::Semicolon;
             m_kat["K_COMMA"] = Keyboard::Key::Comma;
             m_kat["K_PERIOD"] = Keyboard::Key::Period;
             m_kat["K_QUOTE"] = Keyboard::Key::Quote;
             m_kat["K_SLASH"] = Keyboard::Key::Slash;
-            m_kat["K_BACKSLASH"] = Keyboard::Key::BackSlash;
+            m_kat["K_BACKSLASH"] = Keyboard::Key::Backslash;
             m_kat["K_TILDE"] = Keyboard::Key::Tilde;
             m_kat["K_EQUAL"] = Keyboard::Key::Equal;
-            m_kat["K_DASH"] = Keyboard::Key::Dash;
             m_kat["K_SPACE"] = Keyboard::Key::Space;
             m_kat["K_RETURN"] = Keyboard::Key::Enter;
             m_kat["K_ENTER"] = Keyboard::Key::Enter;
-            m_kat["K_BACKSPACE"] = Keyboard::Key::BackSpace;
+            m_kat["K_BACKSPACE"] = Keyboard::Key::Backspace;
             m_kat["K_TAB"] = Keyboard::Key::Tab;
             m_kat["K_PAGEUP"] = Keyboard::Key::PageUp;
             m_kat["K_PAGEDOWN"] = Keyboard::Key::PageDown;

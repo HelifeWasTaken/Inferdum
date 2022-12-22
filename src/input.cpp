@@ -143,7 +143,7 @@ namespace kat {
         return m_Instance->m_MouseButtons[button];
     }
 
-    sf::Vector2i InputManager::getMousePosition()
+    Vector2i InputManager::getMousePosition()
     {
         return sf::Mouse::getPosition();
     }

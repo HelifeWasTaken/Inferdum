@@ -3,8 +3,10 @@
 #include <string>
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/VideoMode.hpp>
 
 #include "./meta.h"
+#include "./vector.h"
 
 namespace kat {
 
@@ -41,7 +43,7 @@ namespace kat {
     /**
      * @brief Window style.
      */
-    enum class WindowStyle : sf::Uint32 {
+    enum class WindowStyle : u32 {
         None = sf::Style::None,
         Titlebar = sf::Style::Titlebar,
         Resize = sf::Style::Resize,
@@ -58,7 +60,7 @@ namespace kat {
     /**
      * @brief A window size.
      */
-    using WindowSize = sf::Vector2u;
+    using WindowSize = Vector2u;
 
     class Window {
     public:

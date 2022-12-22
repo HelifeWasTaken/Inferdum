@@ -113,7 +113,7 @@ namespace kat {
 
         for (FrameIndex y = 0; y < texture_size.y; y += frame_size.y) {
             for (FrameIndex x = 0; x < texture_size.x; x += frame_size.x) {
-                all_possible_frames.push_back(Frame(x, y, frame_size.x, frame_size.y));
+                all_possible_frames.push_back(Frame(x, y, (int)frame_size.x, (int)frame_size.y));
             }
         }
 

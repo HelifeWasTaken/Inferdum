@@ -16,7 +16,7 @@ namespace kat {
     /**
      * @brief An angle
      */
-    using Angle = float;
+    using Angle = sf::Angle;
 
     /**
      * @brief A scale factor.
@@ -26,7 +26,7 @@ namespace kat {
     /**
      * @brief A scale.
      */
-    using Scale = sf::Vector2<ScaleFactor>;
+    using Scale = Vector2<ScaleFactor>;
 
     /**
      * @brief A sprite color.
@@ -41,12 +41,12 @@ namespace kat {
     /**
      * @brief Global bounds.
      */
-    using GlobalBounds = sf::FloatRect;
+    using GlobalBounds = FloatRect;
 
     /**
      * @brief Local bounds.
      */
-    using LocalBounds = sf::FloatRect;
+    using LocalBounds = FloatRect;
 
     class Sprite {
     public:
@@ -92,10 +92,9 @@ namespace kat {
         /**
          * @brief Sets the rotation of the sprite.
          * @param angle The angle of the sprite.
-         * @param is_radians Whether the angle is in radians.
          * @return Sprite& Reference to self.
          */
-        Sprite& setRotation(const Angle& angle, const bool& is_radians = false);
+        Sprite& setRotation(const Angle& angle);
 
         /**
          * @brief Sets the scale of the sprite.
@@ -131,26 +130,25 @@ namespace kat {
          * @brief Gets the position of the sprite.
          * @return Position& The position of the sprite.
          */
-        const Position& getPosition() const;
+        Position getPosition() const;
 
         /**
          * @brief Gets the rotation of the sprite.
-         * @param as_radians Whether the angle is in radians.
          * @return Angle The rotation of the sprite.
          */
-        Angle getRotation(bool as_radians = false) const;
+        Angle getRotation() const;
 
         /**
          * @brief Gets the scale of the sprite.
          * @return Scale The scale of the sprite.
          */
-        const Scale& getScale() const;
+        Scale getScale() const;
 
         /**
          * @brief Gets the origin of the sprite.
          * @return Position The origin of the sprite.
          */
-        const Position& getOrigin() const;
+        Position getOrigin() const;
 
         /**
          * @brief Moves the sprite.
@@ -170,10 +168,9 @@ namespace kat {
         /**
          * @brief Rotates the sprite.
          * @param angle The angle to rotate the sprite.
-         * @param is_radians Whether the angle is in radians.
          * @return Sprite& Reference to self.
          */
-        Sprite& rotate(const Angle& angle, bool is_radians = false);
+        Sprite& rotate(const Angle& angle);
 
         /**
          * @brief Scales the sprite.
@@ -226,7 +223,7 @@ namespace kat {
          * @brief Gets the texture rect of the sprite.
          * @return IntRect The texture rect of the sprite.
          */
-        const Frame& getTextureRect() const;
+        Frame getTextureRect() const;
 
         /**
          * @brief Sets the color of the sprite.

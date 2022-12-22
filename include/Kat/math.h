@@ -82,102 +82,102 @@ namespace kat {
             return radians * DEGREE;
         }
 
-        constexpr static inline double sin(const double& v)
+        static inline double sin(const double& v)
         {
             return std::sin(v);
         }
 
-        constexpr static inline double cos(const double& v)
+        static inline double cos(const double& v)
         {
             return std::cos(v);
         }
 
-        constexpr static inline double tan(const double& v)
+        static inline double tan(const double& v)
         {
             return std::tan(v);
         }
 
-        constexpr static inline double asin(const double& v)
+        static inline double asin(const double& v)
         {
             return std::asin(v);
         }
 
-        constexpr static inline double acos(const double& v)
+        static inline double acos(const double& v)
         {
             return std::acos(v);
         }
 
-        constexpr static inline double atan(const double& v)
+        static inline double atan(const double& v)
         {
             return std::atan(v);
         }
 
-        constexpr static inline double atan2(const double& y, const double& x)
+        static inline double atan2(const double& y, const double& x)
         {
             return std::atan2(y, x);
         }
 
-        constexpr static inline double sinh(const double& v)
+        static inline double sinh(const double& v)
         {
             return std::sinh(v);
         }
 
-        constexpr static inline double cosh(const double& v)
+        static inline double cosh(const double& v)
         {
             return std::cosh(v);
         }
 
-        constexpr static inline double tanh(const double& v)
+        static inline double tanh(const double& v)
         {
             return std::tanh(v);
         }
 
-        constexpr static inline double asinh(const double& v)
+        static inline double asinh(const double& v)
         {
             return std::asinh(v);
         }
 
-        constexpr static inline double acosh(const double& v)
+        static inline double acosh(const double& v)
         {
             return std::acosh(v);
         }
 
-        constexpr static inline double atanh(const double& v)
+        static inline double atanh(const double& v)
         {
             return std::atanh(v);
         }
 
-        constexpr static inline double exp(const double& v)
+        static inline double exp(const double& v)
         {
             return std::exp(v);
         }
 
-        constexpr static inline double log(const double& v)
+        static inline double log(const double& v)
         {
             return std::log(v);
         }
 
-        constexpr static inline double log10(const double& v)
+        static inline double log10(const double& v)
         {
             return std::log10(v);
         }
 
-        constexpr static inline double pow(const double& v, const double& p)
+        static inline double pow(const double& v, const double& p)
         {
             return std::pow(v, p);
         }
 
-        constexpr static inline double sqrt(const double& v)
+        static inline double sqrt(const double& v)
         {
             return std::sqrt(v);
         }
 
-        constexpr static inline double cbrt(const double& v)
+        static inline double cbrt(const double& v)
         {
             return std::cbrt(v);
         }
 
-        constexpr static inline double hypot(const double& x, const double& y)
+        static inline double hypot(const double& x, const double& y)
         {
             return std::hypot(x, y);
         }
@@ -235,67 +235,83 @@ namespace kat {
             return v < 0.0 ? -1.0 : 1.0;
         }
 
-        constexpr static inline double floor(const double& v)
+        static inline double floor(const double& v)
         {
             return std::floor(v);
         }
 
-        constexpr static inline double ceil(const double& v)
+        static inline double ceil(const double& v)
         {
             return std::ceil(v);
         }
 
-        constexpr static inline double round(const double& v)
+        static inline double round(const double& v)
         {
             return std::round(v);
         }
 
-        constexpr static inline double fract(const double& v)
+        static inline double fract(const double& v)
         {
-            return v - std::floor(v);
+            return v - floor(v);
         }
 
-        constexpr static inline double mod(const double& v, const double& m)
+        static inline double mod(const double& v, const double& m)
         {
-            return v - std::floor(v / m) * m;
+            return v - floor(v / m) * m;
         }
 
-        constexpr static inline double modf(const double& v, double* i)
+        static inline double modf(const double& v, double* i)
         {
             return std::modf(v, i);
         }
 
         constexpr static inline double abs(const double& v)
         {
-            return std::abs(v);
+            return v < 0 ? -v : v;
         }
 
-        constexpr static inline double fmod(const double& v, const double& m)
+        static inline double fmod(const double& v, const double& m)
         {
             return std::fmod(v, m);
         }
 
-        constexpr static inline double archimedes(const double& v)
+        static inline double archimedes(const double& v)
         {
-            return 2.0 * v * (1.0 - v / (2.0 * std::sqrt(1.0 + v * v)));
+            return 2.0 * v * (1.0 - v / (2.0 * sqrt(1.0 + v * v)));
         }
 
-        constexpr static inline double erf(const double& v)
+        static inline std::pair<double, double>
+            archimedes_sprial(const double& step, const double& a=5,
+                              const double& b=1.8, const double& n=5)
+        {
+            return std::make_pair(a * cos(step * n) + b * cos(step * n * a / b),
+                                  a * sin(step * n) - b * sin(step * n * a / b));
+        }
+
+		static inline std::pair<double, double>
+            archimedes_sprial2(const double& step, const double& a=5,
+                               const double& b=1.8, const double& n=5)
+        {
+            return std::make_pair(b * step * cos(step + a) * n,
+                                  b * step * sin(step + a) * n);
+        }
+
+        static inline double erf(const double& v)
         {
             return std::erf(v);
         }
 
-        constexpr static inline double easeInSine(const double& t)
+        static inline double easeInSine(const double& t)
         {
             return 1.0 - cos(t * PI / 2.0);
         }
 
-        constexpr static inline double easeOutSine(const double& t)
+        static inline double easeOutSine(const double& t)
         {
             return sin(t * PI / 2.0);
         }
 
-        constexpr static inline double easeInOutSine(const double& t)
+        static inline double easeInOutSine(const double& t)
         {
             return -(cos(PI * t) - 1.0) / 2.0;
         }
@@ -322,7 +338,7 @@ namespace kat {
 
         constexpr static inline double easeOutCubic(double t)
         {
-            return (--t) * t * t + 1.0;
+            return (t - 1) * t * t + 1.0;
         }
 
         constexpr static inline double easeInOutCubic(const double& t)
@@ -339,13 +355,13 @@ namespace kat {
 
         constexpr static inline double easeOutQuart(double t)
         {
-            return 1.0 - (--t) * t * t * t;
+            return 1.0 - (t - 1) * t * t * t;
         }
 
         constexpr static inline double easeInOutQuart(double t)
         {
             return t < 0.5 ? 8.0 * t * t * t * t
-                           : 1.0 - 8.0 * (--t) * t * t * t;
+                           : 1.0 - 8.0 * (t - 1) * t * t * t;
         }
 
         constexpr static inline double easeInQuint(const double& t)
@@ -355,13 +371,13 @@ namespace kat {
 
         constexpr static inline double easeOutQuint(double t)
         {
-            return 1.0 + (--t) * t * t * t * t;
+            return 1.0 + (t - 1) * t * t * t * t;
         }
 
         constexpr static inline double easeInOutQuint(double t)
         {
             return t < 0.5 ? 16.0 * t * t * t * t * t
-                           : 1.0 + 16.0 * (--t) * t * t * t * t;
+                           : 1.0 + 16.0 * (t - 1) * t * t * t * t;
         }
 
         constexpr static inline double easeInExpo(const double& t)
@@ -382,52 +398,52 @@ namespace kat {
                             : (2.0 - pow(2.0, -20.0 * t + 10.0)) / 2.0;
         }
 
-        constexpr static inline double easeInCirc(const double& t)
+        static inline double easeInCirc(const double& t)
         {
             return 1.0 - sqrt(1.0 - (t * t));
         }
 
-        constexpr static inline double easeOutCirc(const double& t)
+        static inline double easeOutCirc(const double& t)
         {
             return sqrt((2.0 - t) * t);
         }
 
-        constexpr static inline double easeInOutCirc(const double& t)
+        static inline double easeInOutCirc(const double& t)
         {
             return t < 0.5
                 ? (1.0 - sqrt(1.0 - 4.0 * (t * t))) / 2.0
                 : (sqrt(-((2.0 * t) - 3.0) * ((2.0 * t) - 1.0)) + 1.0) / 2.0;
         }
 
-        constexpr static inline double easeInBack(const double& t)
+        static inline double easeInBack(const double& t)
         {
             return t * t * t - t * sin(t * PI);
         }
 
-        constexpr static inline double easeOutBack(double t)
+        static inline double easeOutBack(double t)
         {
-            return 1.0 + (--t) * t * t + t * sin(t * PI);
+            return 1.0 + (t - 1) * t * t + t * sin(t * PI);
         }
 
-        constexpr static inline double easeInOutBack(double t)
+        static inline double easeInOutBack(double t)
         {
             return t < 0.5
                 ? (2.0 * t * t * t - t * sin(2.0 * t * PI)) / 2.0
-                : (2.0 + (--t) * t * t + t * sin(2.0 * t * PI)) / 2.0;
+                : (2.0 + (t - 1) * t * t + t * sin(2.0 * t * PI)) / 2.0;
         }
 
-        constexpr static inline double easeInElastic(const double& t)
+        static inline double easeInElastic(const double& t)
         {
             return sin(13.0 * PI / 2.0 * t) * pow(2.0, 10.0 * (t - 1.0));
         }
 
-        constexpr static inline double easeOutElastic(const double& t)
+        static inline double easeOutElastic(const double& t)
         {
             return sin(-13.0 * PI / 2.0 * (t + 1.0)) * pow(2.0, -10.0 * t)
                 + 1.0;
         }
 
-        constexpr static inline double easeInOutElastic(const double& t)
+        static inline double easeInOutElastic(const double& t)
         {
             return t < 0.5
                 ? sin(13.0 * PI * t) * pow(2.0, 20.0 * t - 10.0) / 2.0
@@ -436,17 +452,17 @@ namespace kat {
                     + 1.0;
         }
 
-        constexpr static inline double easeInBounce(const double& t)
+        static inline double easeInBounce(const double& t)
         {
             return pow(2.0, 6.0 * (t - 1.0)) * abs(sin(3.0 * PI * t));
         }
 
-        constexpr static inline double easeOutBounce(const double& t)
+        static inline double easeOutBounce(const double& t)
         {
             return 1.0 - pow(2.0, -6.0 * t) * abs(cos(3.0 * PI * t));
         }
 
-        constexpr static inline double easeInOutBounce(const double& t)
+        static inline double easeInOutBounce(const double& t)
         {
             return t < 0.5
                 ? 8.0 * pow(2.0, 8.0 * (t - 1.0)) * abs(sin(3.0 * PI * t))

@@ -1,4 +1,5 @@
 #include "Kat/window.h"
+#include <SFML/System/String.hpp>
 
 namespace kat {
 
@@ -10,7 +11,7 @@ namespace kat {
 
     Window& Window::create(VideoMode mode, const std::string& title, WindowStyle style, const ContextSettings& settings)
     {
-        m_window.create(mode, title, (sf::Uint32)style, settings);
+        m_window.create(mode, title, (u32)style, settings);
         return *this;
     }
 

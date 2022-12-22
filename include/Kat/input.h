@@ -20,7 +20,7 @@ using Event = sf::Event;
 using JoystickId = unsigned int;
 using JoystickButton = unsigned int;
 using MouseButton = sf::Mouse::Button;
-using MousePosition = sf::Vector2i;
+using MousePosition = Vector2i;
 
 /**
  * \class InputManager
